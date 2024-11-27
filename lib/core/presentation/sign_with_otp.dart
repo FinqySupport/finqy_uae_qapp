@@ -29,13 +29,13 @@ import 'otp_verification.dart';
 
 
 
-class ForgotPin extends StatefulWidget {
-  ForgotPin({Key? key}) : super(key: key);
+class Sign_With_Otp extends StatefulWidget {
+  Sign_With_Otp({Key? key}) : super(key: key);
 
   @override
-  _ForgotPin createState() => _ForgotPin();
+  _Sign_With_Otp createState() => _Sign_With_Otp();
 }
-class _ForgotPin extends State<ForgotPin>with SingleTickerProviderStateMixin {
+class _Sign_With_Otp extends State<Sign_With_Otp>with SingleTickerProviderStateMixin {
   bool obscureText = true;
   bool acceptedTerms = false;
   bool loadershow=true;
@@ -77,32 +77,32 @@ class _ForgotPin extends State<ForgotPin>with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      resizeToAvoidBottomInset : false,
-      appBar: GradientAppBar(
-        title: Text(''),
-        gradient: LinearGradient(
-          begin: Alignment.topRight,
-          end: Alignment.topLeft,
-          colors: [
-            Color.fromRGBO(51, 184, 255, 1.0),
-            Color.fromRGBO(112, 0, 224, 1),
-          ],
-        ),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_outlined,
+        backgroundColor: Colors.white,
+        resizeToAvoidBottomInset : false,
+        appBar: GradientAppBar(
+          title: Text(''),
+          gradient: LinearGradient(
+            begin: Alignment.topRight,
+            end: Alignment.topLeft,
+            colors: [
+              Color.fromRGBO(51, 184, 255, 1.0),
+              Color.fromRGBO(112, 0, 224, 1),
+            ],
+          ),
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_outlined,
               color:Colors.white),
-          onPressed: () {
-            Navigator.of(context).pop();// Close the popup
+            onPressed: () {
+              Navigator.of(context).pop();// Close the popup
 
-            // Handle back button press
-          },
+              // Handle back button press
+            },
+          ),
         ),
-      ),
 
 
 
-      body:getBody(),
+        body:getBody(),
 
     );
   }
@@ -139,7 +139,7 @@ class _ForgotPin extends State<ForgotPin>with SingleTickerProviderStateMixin {
                           child: Column(
                             children: [
                               CustomHeaderInfoSignup(
-                                title: "Forgot Pin",
+                                title: "Hi, Welcome Back!",
                                 subtitle: 'Sign in to your account.',
                                 bgColor: Constants.qAppColor,
                                 appbar: true,
@@ -280,7 +280,7 @@ class _ForgotPin extends State<ForgotPin>with SingleTickerProviderStateMixin {
                                               ),
                                             ),
                                             languageCode: "en",
-                                            initialCountryCode: 'AE',
+                                            initialCountryCode: 'IN',
                                             onCountryChanged: (country)
                                             {
                                               country_code=country.code;
@@ -350,7 +350,7 @@ class _ForgotPin extends State<ForgotPin>with SingleTickerProviderStateMixin {
                     }
 
                     if (_formKey.currentState!.validate()) {
-                      forgot_Pin();
+                      Sigin_with_otp();
 
                     }
                   },
@@ -365,45 +365,53 @@ class _ForgotPin extends State<ForgotPin>with SingleTickerProviderStateMixin {
 
 
   }
-  void forgot_Pin() async
+  void  Sigin_with_otp() async
   {
 
+    if(loadershow)
+    {
+      Loader.show(context,
+          isSafeAreaOverlay: true,
+          isBottomBarOverlay: true,
+          isAppbarOverlay: true,
+          progressIndicator: CircularProgressIndicator());
+    }
+    String useranme="";
+    String phone_code1="";
+    useranme=phoneController.text;
+    phone_code1=phone_code;
 
-    Loader.show(context,
-        isSafeAreaOverlay: true,
-        isBottomBarOverlay: true,
-        isAppbarOverlay: true,
-        progressIndicator: CircularProgressIndicator());
+
+    String token=await getFCMToken() ?? "";
+
+
     // Create a map with the data to send in the request body
-    var data = {
-
-      'phone_code':phone_code,
-      'mobile_no':phoneController.text,
-
+    var data =
+    {
+      'is_pin':"0",
+      'phone_code':phone_code1,
+      'mobile_no':useranme,
     };
-
-
     ConsoleLogUtils.printLog('params:$data');
-
-    var json  = (await Api().forgot_pin(data))!;
-    if(loadershow) {
+    var json  = (await Api().loginAsync(data))!;
+    if(loadershow)
+    {
       Loader.hide();
     }
-
-
     if (json!=null)
     {
       // ConsoleLogUtils.printLog('Response Data:$json');
       final  response= jsonDecode(json);
       var status=response['status'] ?? '';
-      //  ConsoleLogUtils.printLog('nnnnn ${status}');
+      ConsoleLogUtils.printLog('nnnnn ${status}');
       if (status!=null&&status)
       {
+        setLogin(true);
         Future.delayed(const Duration(milliseconds: 100), ()
         {
           // Replace 'HomeScreen()' with the name of the screen you want to navigate to after the splash screen.
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => OtpVerification(forgot: true, phone: phoneController.text, phone_code: phone_code, from: '3',)),
+            MaterialPageRoute(builder: (context) => OtpVerification(forgot: false, phone: phoneController.text, phone_code: phone_code, from: '2',)),
           );
         });
       }

@@ -1,13 +1,18 @@
 
 
+import 'dart:convert';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/svg.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:q_app/core/presentation/home_slider_carousel.dart';
+import 'package:q_app/core/presentation/recommendation_list.dart';
 import 'package:q_app/core/presentation/upload_aecb_report.dart';
 
+import '../api/client.dart';
+import '../console_utils.dart';
 import '../widgets/profile_icon_widget.dart';
 import 'my_products_widget.dart';
 
@@ -28,6 +33,7 @@ class _MyHomeScreen extends State<MyHomeScreen>with SingleTickerProviderStateMix
   bool showNumberValidation=false;
   var country_code='';
   var phone_code='';
+  var resultrecList=[];
 
 
   TextEditingController textEditingControllerPhone= TextEditingController();
@@ -36,6 +42,7 @@ class _MyHomeScreen extends State<MyHomeScreen>with SingleTickerProviderStateMix
   @override
   void initState() {
     super.initState();
+    qrecommendations();
   }
 
 
@@ -335,6 +342,50 @@ class _MyHomeScreen extends State<MyHomeScreen>with SingleTickerProviderStateMix
               ),
               HomeSliderCarousel(sliderData: const []),
               Container(
+                margin:  const EdgeInsets.only(top: 20.0, right: 25, left: 25),
+                child:  const Text(
+                  'Q Recommendation',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontFamily: 'Poppins',
+                    fontSize: 18.0,
+                    color: Color.fromRGBO(40, 44, 53, 1),
+                  ),
+                ),
+              ),
+              Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Container(
+                    margin:  const EdgeInsets.only(top: 10.0, right: 20),
+                    child:  const Text(
+                      'According to your CREDIT analysis, we recommend',
+                      style: TextStyle(
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'Poppins',
+                        fontSize: 12.0,
+                        color: Color.fromRGBO(113, 117, 124, 1),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      physics: const ClampingScrollPhysics(),
+                      itemCount: resultrecList.length,
+                      itemBuilder: (context, index)
+                      {
+                        // Add spacing between images
+                        return getListingBody(resultrecList[index],index);
+                      },
+                    ),
+
+                  ),
+
+                ],
+              ),
+              Container(
                 height: 52,
                 margin: const EdgeInsets.only(top: 20, right: 5),
                 child: Card(
@@ -596,8 +647,260 @@ class _MyHomeScreen extends State<MyHomeScreen>with SingleTickerProviderStateMix
     );
   }
 
+  qrecommendations() async
+  {
+    var data =
+    {
+      //'order_id': widget.order_id,
+    };
+
+    var response  = (await Api().qrecommendations(context,data))!;
+    if (response!=null)
+    {
+      var newResponse = json.decode(response);
+      var status=newResponse['status'] ?? '';
+      if(status==true)
+      {
+        ConsoleLogUtils.printLog('recommendationResponse:$newResponse');
+        dynamic userMap = jsonDecode(response);
+        resultrecList=userMap['data'];
+
+        setState(() {
+
+        });
 
 
+        return json.decode(response);
+      }
+      else {
+
+      }
+    } else {
+      print('nananan 111111111111');
+      throw Exception('Failed to load data');
+    }
+
+
+  }
+
+  Widget getListingBody(dynamic univItem,int idx)
+  {
+    return
+      GestureDetector(
+          onTap: ()
+          {
+            _showCreditCardDialog(context,univItem);
+          },
+          child: Container(
+            margin: const EdgeInsets.fromLTRB(16, 10, 16, 10),
+            child:Column(
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.only(left: 10,top: 10),
+                      height: 50,
+                      width: 50,
+                      //color: Colors.greenAccent,
+                      child: CachedNetworkImage(
+                        fit: BoxFit.fitWidth,
+                        imageUrl: '',
+                        errorWidget:(context, url, error) => Image.asset(
+                          'assets/images/q_reco.png',
+
+                        ),
+                      ),
+                    ),
+
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          // _showCreditCardDialog(context,univItem);
+                        },
+                        child: Container(
+                          margin: const EdgeInsets.fromLTRB(15, 10, 5, 15),
+                          child: Column(
+                            children: [
+                              Container(
+                                //color: Colors.greenAccent,
+                                child:   Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Expanded(child: Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text(univItem['name'],
+                                        maxLines: 3,
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: TextAlign.start,
+                                        style: TextStyle(
+                                            color: Color.fromRGBO(74, 74, 74, 1),
+                                            fontFamily: 'Poppins',
+                                            fontWeight: FontWeight.w500,
+                                            fontSize: 14.0),
+                                      ),
+                                    ),),
+                                    SizedBox(width: 5,),
+
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(height: 5,),
+                              /*  Align(
+                                alignment: Alignment.centerLeft,
+                                child: Text(
+                                  'Rs 40,36,108',
+                                  textAlign: TextAlign.start,
+                                  style: TextStyle(
+                                      color:  const Color.fromRGBO(4, 153, 237, 1),
+                                      fontFamily: 'Poppins',
+                                      fontWeight: FontWeight.w400,
+                                      fontSize: 13.0),
+                                ),
+                              ),*/
+                            ],
+                          ),
+                        ),
+                        /*
+                      child:Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+
+                          Container(
+                            width: 30,
+                            margin: EdgeInsets.only(right: 10),
+                            //color: Colors.yellow,
+                            child: IconButton(
+                              icon:isInProcess?SvgPicture.asset('assets/images/down_arrow.svg'):(application_status==0? SvgPicture.asset('assets/images/univ_delete.svg'):SvgPicture.asset('assets/images/down_arrow.svg')),
+                              // color: Colors.orangeAccent,
+                              padding: new EdgeInsets.all(0.0),
+                              onPressed: () {
+                                if(isInProcess){
+                                  print('arrow');
+                                  selectedIndex=idx;
+
+                                  if(openedIdx.contains(idx)){
+                                    openedIdx.remove(idx);
+                                  }
+                                  else{
+                                    openedIdx.clear();
+                                    openedIdx.add(idx);
+                                  }
+                                  setState(() {
+                                    print('selectedIndex:$selectedIndex');
+                                  });
+                                }
+                                else {
+
+                                  if (application_status==0) {
+                                    _showMyDialog(univItem);
+                                  }
+                                  else {
+                                    print('arrow1');
+
+                                    selectedIndex=idx;
+                                    if(openedIdx.contains(idx)){
+                                      openedIdx.remove(idx);
+                                    }
+                                    else{
+                                      openedIdx.clear();
+                                      openedIdx.add(idx);
+                                    }
+                                    setState(() {
+
+                                    });
+                                  }
+
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),*/
+                      ),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.only(top:15,right: 10),
+                      child: Image.asset('assets/images/round_btn.png', height: 24, width: 24), //,
+                    )
+                  ],
+                ),
+
+                Container(
+                  margin: const EdgeInsets.only(left: 10,top: 5),
+                  child: const Divider(
+                    height: 1,
+                    color: Color.fromRGBO(193, 199, 208, 1),
+                    thickness: 1,
+                  ),
+                ),
+              ],
+            ),
+          ));
+  }
+
+
+  void _showCreditCardDialog(BuildContext context,dynamic univItem) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ),
+          title: Text(
+            univItem['title'],
+            style: TextStyle(fontSize: 18,
+              fontWeight: FontWeight.w600,
+              color: Color.fromRGBO(30, 30, 30, 1),
+
+              fontFamily: 'Poppins',),
+          ),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(univItem['description'],
+                style: TextStyle(fontSize: 15,color: Color.fromRGBO(113, 117, 124, 1),
+                    fontFamily: 'Poppins'),
+              ),
+              SizedBox(height: 10),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red, // Set the button color to red
+                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 7),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.0), // Rounded corners
+                  ),
+                ),
+                onPressed: () {
+                  {
+                /*    Navigator.of(context).pop(); // Close the dialog first
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => ProductTypeDeatils(type: univItem['product'].toString(), text:univItem['title'],item:univItem)),
+                    );*/
+                  }
+                },
+                child: Text(
+                  'Apply Now',
+                  style: TextStyle(fontSize: 16, color: Colors.white),
+                ),
+              ),
+
+            ],
+          ),
+          /*  actions: [
+          IconButton(
+            icon: Icon(Icons.close),
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+            },
+          ),
+        ],*/
+        );
+      },
+    );
+  }
 
 }
 

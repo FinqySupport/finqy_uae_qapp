@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:country_picker/country_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 
@@ -968,8 +969,19 @@ class _SignUpScreen extends State<SignUpScreen>with SingleTickerProviderStateMix
                                                     //print('nnnnnnnnnn');
                                                   });
                                                 },
+                                                onTap: ()
+                                                {
+                                                  showCountryPicker(
+                                                    context: context,
+                                                    showPhoneCode: false, // optional. Shows phone code before the country name.
+                                                    onSelect: (Country country) {
+                                                      NationalityController.text=country.name!;
+                                                      print('Select country: ${country.name}');
+                                                    },
+                                                  );
+                                                },
                                                 controller: NationalityController,
-                                                keyboardType: TextInputType.text,
+                                                keyboardType: TextInputType.none,
                                                 decoration: InputDecoration(
 
                                                   contentPadding: const EdgeInsets.only(left:10,right:10,top:5,bottom:5),
@@ -1544,7 +1556,7 @@ class _SignUpScreen extends State<SignUpScreen>with SingleTickerProviderStateMix
         {
           // Replace 'HomeScreen()' with the name of the screen you want to navigate to after the splash screen.
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => OtpVerification(forgot: false, phone: phoneController.text, phone_code: phone_code,)),
+            MaterialPageRoute(builder: (context) => OtpVerification(forgot: false, phone: phoneController.text, phone_code: phone_code, from: '',)),
           );
         });
       }

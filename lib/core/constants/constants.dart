@@ -5,11 +5,24 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_overlay_loader/flutter_overlay_loader.dart';
+import 'package:intl/intl.dart';
 
 
 class Constants {
 
-    static showLoader(BuildContext context) {
+  static final NumberFormat indianNumberFormat = NumberFormat.decimalPattern('en_IN');   bool isValidPanCardNo(String panCardNo) {
+    // Regular expression pattern for PAN card format
+    RegExp regex = RegExp(r'^[A-Z]{5}[0-9]{4}[A-Z]$');
+
+    // Check if the provided PAN card number matches the pattern
+    if (regex.hasMatch(panCardNo)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static showLoader(BuildContext context) {
     return
       Loader.show(context,
           isSafeAreaOverlay: true,
@@ -138,11 +151,10 @@ Color lighten(Color c, [int percent = 10]) {
 // final lightRed = lighten(Colors.red);
 // final darkBlue = darken(Colors.blue, .3);
 
- bool containsPhoneNumber(String text) {
+bool containsPhoneNumber(String text) {
   final pattern = r'\+?\d{10} '; // Matches 10-digit numbers
   final regex = RegExp(pattern);
   return regex.hasMatch(text);
 }
- const textBorderColor = Color.fromRGBO(234, 234, 234, 1);
-
+const textBorderColor = Color.fromRGBO(234, 234, 234, 1);
 

@@ -200,7 +200,7 @@ class _MyRewardScreen extends State<MyRewardScreen>with SingleTickerProviderStat
                   ),
 
                   Container(
-                    height: 95,
+                    height: 100,
                     margin: const EdgeInsets.only(top: 85),
                     child: Card(
                       shape: RoundedRectangleBorder(
@@ -208,7 +208,7 @@ class _MyRewardScreen extends State<MyRewardScreen>with SingleTickerProviderStat
                       ),
                       color: Colors.white,
 
-                      margin: const EdgeInsets.symmetric(horizontal: 65.0),
+                      margin: const EdgeInsets.symmetric(horizontal: 70.0),
                       child: Center(
                         child:  Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
@@ -219,14 +219,14 @@ class _MyRewardScreen extends State<MyRewardScreen>with SingleTickerProviderStat
                                   style: TextStyle(
                                     fontWeight: FontWeight.w600,
                                     color: Color.fromRGBO(41, 80, 237, 1),
-                                    fontSize: 45.0,
+                                    fontSize: 42.0,
                                   ),
 
                                 ),
                               ),
                             ),
                             Container(
-
+                              padding: EdgeInsets.only(bottom: 5),
                               child: const Align(
                                 child: Text('Q-coins', // Use the data from the list
                                   style: TextStyle(
@@ -246,7 +246,7 @@ class _MyRewardScreen extends State<MyRewardScreen>with SingleTickerProviderStat
 
                   Container(
                     height: 180,
-                    margin: const EdgeInsets.only(left: 15, right: 15, top: 10),
+                    margin: const EdgeInsets.only(left: 10, right: 0, top: 20,bottom: 20),
                     width: MediaQuery.of(context).size.width, // Set width to match screen width
                     child: ListView.builder(
                       scrollDirection: Axis.horizontal, // Set scroll direction to horizontal
@@ -314,23 +314,49 @@ class _MyRewardScreen extends State<MyRewardScreen>with SingleTickerProviderStat
                               }
 
                             }
-
-
                             // Handle onTap
                           },
-                          child: Padding(
-                            padding: const EdgeInsets.only(right: 0), // Adjust spacing as needed
-                            child: Container(
-                              child: ClipRRect(
-                                borderRadius: const BorderRadius.all(Radius.circular(15)),
-                                child: CachedNetworkImage(
-                                  imageUrl: "", // Add your image URL here
-                                  errorWidget: (context, url, error) => Image.asset(
-                                    (index==0) ? 'assets/images/earn.png':    (index==1) ? 'assets/images/reddem.png':'assets/images/reward_offer.png',
-                                    width: 165,
-                                    height: 176,
-                                    fit: BoxFit.contain,
-                                  ),
+                          child: Container(
+                            width: 150,
+                            height: 165, // Set the height here
+
+                            margin: const EdgeInsets.only(left: 10, right: 10),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                color: Colors.white, // Your desired border color
+                              ),
+                              borderRadius: BorderRadius.all(Radius.circular(20)),
+                            ),
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.all(Radius.circular(15)),
+                              child: Container(
+                                padding: EdgeInsets.only(left: 20),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                  children: [
+                                    Image.asset(
+                                      (index == 0) ? 'assets/images/earn_small.png' : (index == 1) ? 'assets/images/reddem_small.png' : 'assets/images/reward_offersmall.png',
+                                      width: 48,
+                                      height: 48,
+                                    ),
+                                    Text(
+
+                                      (index == 0) ?  'Earn': (index == 1) ? 'Redeem' : 'Offers',
+                                      style: TextStyle(
+                                        color: Color.fromRGBO(40, 44, 53, 1),
+                                        fontFamily: 'Poppins',
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    Image.asset(
+                                      'assets/images/round_btn.png',
+                                      width: 28,
+                                      height: 28,
+                                    ),
+                                  ],
                                 ),
                               ),
                             ),

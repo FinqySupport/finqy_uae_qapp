@@ -6,26 +6,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:intl/intl.dart';
-import 'package:q_app/core/presentation/signup_screen.dart';
+import 'package:q_app/core/presentation/signin_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 
 import 'package:package_info_plus/package_info_plus.dart';
 
+import '../core/api/client.dart';
 import '../core/console_utils.dart';
 
 
 
-Future<int?> getpost_unlock() async{
-  final prefs = await SharedPreferences.getInstance();
-  final int? userId = prefs.getInt('post_unlock');
-  return userId;
-}
 
-Future setpost_unlock(int phone_code) async{
-  final prefs = await SharedPreferences.getInstance();
-  prefs.setInt('post_unlock', phone_code);
-}
 
 Future<String?> getUserPhone_code() async{
   final prefs = await SharedPreferences.getInstance();
@@ -42,15 +34,7 @@ Future<String?> getUserMobile_no() async{
   final String? userId = prefs.getString('mobile_no');
   return userId;
 }
-Future setApplication_year(String phone_code) async{
-  final prefs = await SharedPreferences.getInstance();
-  prefs.setString('application_year', phone_code);
-}
-Future<String?> getApplication_year() async{
-  final prefs = await SharedPreferences.getInstance();
-  final String? userId = prefs.getString('application_year');
-  return userId;
-}
+
 Future setAddress(String phone_code) async{
   final prefs = await SharedPreferences.getInstance();
   prefs.setString('address', phone_code);
@@ -190,35 +174,35 @@ Future setOtpScreenPhone(bool token) async{
 }
 
 Future<bool?> getProfileScreen() async{
-final prefs = await SharedPreferences.getInstance();
-final bool? userId = prefs.getBool('profile_screen');
-return userId;
+  final prefs = await SharedPreferences.getInstance();
+  final bool? userId = prefs.getBool('profile_screen');
+  return userId;
 }
 
 Future setProfileScreen(bool token) async{
-final prefs = await SharedPreferences.getInstance();
-prefs.setBool('profile_screen', token);
+  final prefs = await SharedPreferences.getInstance();
+  prefs.setBool('profile_screen', token);
 }
 
 Future<String?> getprofile_initial_color() async{
-final prefs = await SharedPreferences.getInstance();
-final String? profile_initial_color= prefs.getString('profile_initial_color');
-return profile_initial_color;
+  final prefs = await SharedPreferences.getInstance();
+  final String? profile_initial_color= prefs.getString('profile_initial_color');
+  return profile_initial_color;
 }
 
 Future setprofile_initial_color(String token) async{
-final prefs = await SharedPreferences.getInstance();
-prefs.setString('profile_initial_color', token);
+  final prefs = await SharedPreferences.getInstance();
+  prefs.setString('profile_initial_color', token);
 }
 Future<String?> getprofile_initialr() async{
-final prefs = await SharedPreferences.getInstance();
-final String? profile_initial_color= prefs.getString('profile_initial');
-return profile_initial_color;
+  final prefs = await SharedPreferences.getInstance();
+  final String? profile_initial_color= prefs.getString('profile_initial');
+  return profile_initial_color;
 }
 
 Future setprofile_initial(String token) async{
-final prefs = await SharedPreferences.getInstance();
-prefs.setString('profile_initial', token);
+  final prefs = await SharedPreferences.getInstance();
+  prefs.setString('profile_initial', token);
 }
 
 Future<String?> getadmin_badge() async{
@@ -276,52 +260,46 @@ Future setKey_hide_buy_btn(String token) async{
 
 
 Future<bool?> getLoggedIn() async{
-final prefs = await SharedPreferences.getInstance();
-final bool? userId = prefs.getBool('isloggedin');
-return userId;
+  final prefs = await SharedPreferences.getInstance();
+  final bool? userId = prefs.getBool('isloggedin');
+  return userId;
 }
 
 Future setLogin(bool token) async{
-final prefs = await SharedPreferences.getInstance();
-prefs.setBool('isloggedin', token);
+  final prefs = await SharedPreferences.getInstance();
+  prefs.setBool('isloggedin', token);
 }
 
 
 
-   Future setLogout(bool token, BuildContext context) async
+Future setLogout(bool token, BuildContext context) async
 {
 
-  String usergroup = await getUserGroup() ?? "";
-  String userid = await getUserId() ?? "";
- // UpdateFCM.updateFCMTokenBlankWithoutContext(usergroup,userid);
 
-
-  //FirebaseAppManager.unRegisterFirebase();
-
- // MoengageAppManager.logoutFromMoengage();
-
+  setUserId('');
+  setTokenId('');
   final pref = await SharedPreferences.getInstance();
   await pref.clear();
-  setTokenId('');
+  Api().getTokenLogout();
 
   setFirebaseDelegateInstance(true);
   Future.delayed(const Duration(seconds: 1), () {
     if (Platform.isIOS) {
       Navigator.pushAndRemoveUntil(context, CupertinoPageRoute(builder: (BuildContext context){
-        return SignUpScreen();
+        return SignInScreen();
       }), (r){
         return false;
       });
     }
     else {
       Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context){
-        return SignUpScreen();
+        return SignInScreen();
       }), (r){
         return false;
       });
     }
 
-   // Navigator.of(context).pushNamedAndRemoveUntil('/landingpage', (Route<dynamic> route) => false);
+    // Navigator.of(context).pushNamedAndRemoveUntil('/landingpage', (Route<dynamic> route) => false);
 
 
   });
@@ -330,30 +308,30 @@ prefs.setBool('isloggedin', token);
 Future<String?> getversionCode() async
 {
   final info = await PackageInfo.fromPlatform();
-   String versionCode="";
-   if(Platform.isAndroid)
-   {
-      versionCode =  info.buildNumber;
-   }
-   else
-     {
-       versionCode =  info.buildNumber;
-     }
+  String versionCode="";
+  if(Platform.isAndroid)
+  {
+    versionCode =  info.buildNumber;
+  }
+  else
+  {
+    versionCode =  info.buildNumber;
+  }
 
   return versionCode;
 }
 
-  Future<String?> getversionName() async{
-    final info = await PackageInfo.fromPlatform();
-    String versionName="";
-    if(Platform.isAndroid)
-    {
-       versionName = info.version;
-    }
-   else
-     {
-       versionName = info.version;
-     }
+Future<String?> getversionName() async{
+  final info = await PackageInfo.fromPlatform();
+  String versionName="";
+  if(Platform.isAndroid)
+  {
+    versionName = info.version;
+  }
+  else
+  {
+    versionName = info.version;
+  }
   return versionName;
 }
 
@@ -475,5 +453,4 @@ Future<int?> getViewedNotificationCount() async{
   final int? apnCount= prefs.getInt('ViewedAPNCount');
   return apnCount;
 }
-
 

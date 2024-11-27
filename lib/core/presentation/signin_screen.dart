@@ -12,6 +12,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl_phone_field/country_picker_dialog.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:q_app/core/presentation/forgot_pin.dart';
+import 'package:q_app/core/presentation/sign_with_otp.dart';
 import 'package:q_app/core/presentation/signup_screen.dart';
 
 import '../../storage/shared_preference.dart';
@@ -41,7 +42,7 @@ class _SignInScreen extends State<SignInScreen>with SingleTickerProviderStateMix
   bool showNumberValidation=false;
 
   var country_code='';
-  var phone_code='971';
+  var phone_code='91';
   bool siginotp = false;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -109,7 +110,7 @@ class _SignInScreen extends State<SignInScreen>with SingleTickerProviderStateMix
                         CustomHeaderInfoSignup(title: "Hi, Welcome Back!", subtitle: 'Sign in to your account.',
                           bgColor: Constants.qAppColor,appbar: false,),
                         //Spacer(),
-                    /*    const SizedBox(height: 80),
+                        /*    const SizedBox(height: 80),
                         Padding(
                           padding: const EdgeInsets.only(left: 16,right: 16), //apply padding to all four sides
                           child: Align(
@@ -311,102 +312,102 @@ class _SignInScreen extends State<SignInScreen>with SingleTickerProviderStateMix
                                               const SizedBox(height: 25),
 
                                               if(!siginotp)
-                                              Column(
-                                                children: [
-                                                  Container(
-                                                    alignment: Alignment.centerLeft, // Adjust the alignment as needed
-                                                    child: const Text(
-                                                      'PIN',
-                                                      textAlign: TextAlign.start,
-                                                      style: TextStyle(
-                                                        color: Color.fromRGBO(40, 47, 60, 1.0),
-                                                        fontFamily: 'Poppins',
-                                                        fontWeight: FontWeight.w400,
-                                                        fontSize: 13.0,
+                                                Column(
+                                                  children: [
+                                                    Container(
+                                                      alignment: Alignment.centerLeft, // Adjust the alignment as needed
+                                                      child: const Text(
+                                                        'PIN',
+                                                        textAlign: TextAlign.start,
+                                                        style: TextStyle(
+                                                          color: Color.fromRGBO(40, 47, 60, 1.0),
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight: FontWeight.w400,
+                                                          fontSize: 13.0,
+                                                        ),
                                                       ),
                                                     ),
-                                                  ),
-                                                  const SizedBox(height: 10),
-                                                  TextFormField(
-                                                    onChanged: (text) {
-                                                      setState(() {
-                                                        // your logic here
-                                                      });
-                                                    },
-                                                    maxLength: 4,
-                                                    obscureText: obscureText,
-                                                    controller: pinController,
-                                                    keyboardType: TextInputType.visiblePassword,
-                                                    decoration: InputDecoration(
-                                                      prefixIconConstraints:const BoxConstraints(
-                                                        maxHeight: 54,
-                                                      ),
-                                                      prefixIcon : Container(
-                                                        margin: const EdgeInsets.fromLTRB(16, 0, 11, 0),
-                                                        child: CustomImageView(
-                                                          imagePath: 'assets/images/lock.svg',
-                                                          height: 20,
-                                                          width: 20,
+                                                    const SizedBox(height: 10),
+                                                    TextFormField(
+                                                      onChanged: (text) {
+                                                        setState(() {
+                                                          // your logic here
+                                                        });
+                                                      },
+                                                      maxLength: 4,
+                                                      obscureText: obscureText,
+                                                      controller: pinController,
+                                                      keyboardType: TextInputType.visiblePassword,
+                                                      decoration: InputDecoration(
+                                                        prefixIconConstraints:const BoxConstraints(
+                                                          maxHeight: 54,
                                                         ),
-                                                      ),
-                                                      suffixIcon: GestureDetector(
-                                                        onTap: () {
-                                                          setState(() {
-                                                            obscureText = !obscureText;
-                                                          });
-                                                        },
-                                                        child: Icon(
-                                                          obscureText ? Icons.visibility_off : Icons.visibility, // Toggle between visible and not visible icons
-                                                          color: Colors.grey,
+                                                        prefixIcon : Container(
+                                                          margin: const EdgeInsets.fromLTRB(16, 0, 11, 0),
+                                                          child: CustomImageView(
+                                                            imagePath: 'assets/images/lock.svg',
+                                                            height: 20,
+                                                            width: 20,
+                                                          ),
                                                         ),
-                                                      ),
-                                                      contentPadding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
-                                                      border: const OutlineInputBorder(),
-                                                      enabledBorder: OutlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              color: ColorConstant
-                                                                  .textbordercolor,
-                                                              width:1)),
-                                                      hintText: 'Enter your pin',
+                                                        suffixIcon: GestureDetector(
+                                                          onTap: () {
+                                                            setState(() {
+                                                              obscureText = !obscureText;
+                                                            });
+                                                          },
+                                                          child: Icon(
+                                                            obscureText ? Icons.visibility_off : Icons.visibility, // Toggle between visible and not visible icons
+                                                            color: Colors.grey,
+                                                          ),
+                                                        ),
+                                                        contentPadding: const EdgeInsets.only(left: 10, right: 10, top: 5, bottom: 5),
+                                                        border: const OutlineInputBorder(),
+                                                        enabledBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                color: ColorConstant
+                                                                    .textbordercolor,
+                                                                width:1)),
+                                                        hintText: 'Enter your pin',
 
-                                                      focusedBorder: OutlineInputBorder(
-                                                          borderSide: BorderSide(
-                                                              color: ColorConstant
-                                                                  .textbordercolor,
-                                                              width: 1)
+                                                        focusedBorder: OutlineInputBorder(
+                                                            borderSide: BorderSide(
+                                                                color: ColorConstant
+                                                                    .textbordercolor,
+                                                                width: 1)
+                                                        ),
+                                                        hintStyle: TextStyle(
+                                                          color: ColorConstant.labelcolor,
+                                                          fontSize: 15,
+                                                          fontFamily: 'Poppins',
+                                                          // fontWeight: FontWeight.w400
+                                                        ),
+                                                        //<-- SEE HERE
+                                                        labelStyle: TextStyle(
+                                                          color: ColorConstant.labelcolor,
+                                                          fontSize: 16,
+                                                          fontFamily: 'Poppins',
+                                                          //fontWeight: FontWeight.w400
+                                                        ),
+
                                                       ),
-                                                      hintStyle: TextStyle(
-                                                        color: ColorConstant.labelcolor,
-                                                        fontSize: 15,
+                                                      style: TextStyle(
+                                                        color: ColorConstant.hintcolor,
+                                                        fontSize: 16,
                                                         fontFamily: 'Poppins',
                                                         // fontWeight: FontWeight.w400
                                                       ),
-                                                      //<-- SEE HERE
-                                                      labelStyle: TextStyle(
-                                                        color: ColorConstant.labelcolor,
-                                                        fontSize: 16,
-                                                        fontFamily: 'Poppins',
-                                                        //fontWeight: FontWeight.w400
-                                                      ),
-
+                                                      validator: (String? value) {
+                                                        if (value == null || value == '') {
+                                                          return 'Enter your pin';
+                                                        }
+                                                        return null;
+                                                      },
+                                                      autovalidateMode: AutovalidateMode.onUserInteraction,
                                                     ),
-                                                    style: TextStyle(
-                                                      color: ColorConstant.hintcolor,
-                                                      fontSize: 16,
-                                                      fontFamily: 'Poppins',
-                                                      // fontWeight: FontWeight.w400
-                                                    ),
-                                                    validator: (String? value) {
-                                                      if (value == null || value == '') {
-                                                        return 'Enter your pin';
-                                                      }
-                                                      return null;
-                                                    },
-                                                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                                                  ),
-                                                  const SizedBox(height: 20),
-                                                ],
-                                              ),
+                                                    const SizedBox(height: 20),
+                                                  ],
+                                                ),
 
 
                                               Container(
@@ -460,9 +461,21 @@ class _SignInScreen extends State<SignInScreen>with SingleTickerProviderStateMix
 
                                                         recognizer: TapGestureRecognizer()..onTap = () async
                                                         {
+                                                          Future.delayed(const Duration(milliseconds: 100), ()
+                                                          {
+                                                            // Replace 'HomeScreen()' with the name of the screen you want to navigate to after the splash screen.
+                                                            Navigator.of(context).push(
+                                                              MaterialPageRoute(builder: (context) => Sign_With_Otp()),
+                                                            );
+                                                          });
+
+
+
+                                                          /*
                                                           if(phoneController.text.isEmpty)
                                                           {
-                                                            setState(() {
+                                                            setState(()
+                                                            {
                                                               _formKey.currentState!.validate();
                                                               phonevalidation = true; // Set validation flag to true
                                                               siginotp = true; // Set validation flag to true
@@ -470,14 +483,10 @@ class _SignInScreen extends State<SignInScreen>with SingleTickerProviderStateMix
                                                           }
                                                           else
                                                           {
-                                                            Future.delayed(const Duration(milliseconds: 100), ()
-                                                            {
-                                                              // Replace 'HomeScreen()' with the name of the screen you want to navigate to after the splash screen.
-                                                              Navigator.of(context).push(
-                                                                MaterialPageRoute(builder: (context) => OtpVerification(forgot: false, phone: phoneController.text, phone_code: phone_code,)),
-                                                              );
-                                                            });
-                                                          }
+
+                                                            Sigin_with_otp();
+
+                                                          }*/
 
                                                         },
 
@@ -556,7 +565,7 @@ class _SignInScreen extends State<SignInScreen>with SingleTickerProviderStateMix
                                                       ),
                                                     ),
                                                     onPressed: () {
-                                                 /*     if(phoneController.text.isEmpty)
+                                                      /*     if(phoneController.text.isEmpty)
                                                       {
                                                         setState(() {
                                                           // ConsoleLogUtils.printLog('printMessage');
@@ -573,8 +582,8 @@ class _SignInScreen extends State<SignInScreen>with SingleTickerProviderStateMix
 
                                                       if (_formKey.currentState!.validate())
                                                       {
-                                                         _login();
-                                                      /*  Future.delayed(const Duration(milliseconds: 100), ()
+                                                        _login();
+                                                        /*  Future.delayed(const Duration(milliseconds: 100), ()
                                                         {
                                                           Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (BuildContext context){
                                                             return Dashboard();
@@ -585,6 +594,7 @@ class _SignInScreen extends State<SignInScreen>with SingleTickerProviderStateMix
 
                                                         });
 */
+
                                                       }
                                                     },
                                                     child: const Text('Sign in'),
@@ -629,35 +639,22 @@ class _SignInScreen extends State<SignInScreen>with SingleTickerProviderStateMix
           isAppbarOverlay: true,
           progressIndicator: CircularProgressIndicator());
     }
-       String useranme="";
-       String phone_code1="";
-      useranme=phoneController.text;
-      phone_code1=phone_code;
+
+    String phone_code1="";
+
+    phone_code1=phone_code;
 
 
     String token=await getFCMToken() ?? "";
 
-
-    if(token.length==0){
-      //  await FirebaseManager.initialize();
-      //   monegageEvent('login_firebase_initialize');
-
-
-    /*  final fcmToken = await FirebaseMessaging.instance.getToken();
-      ConsoleLogUtils.printLog('fcm123: $fcmToken');
-      setFCMToken(fcmToken.toString());
- */
-
-
-    }
 
     // Create a map with the data to send in the request body
     var data =
     {
       'is_pin':"1",
       'phone_code':phone_code1,
-      'mobile_no':useranme,
-      'pin':pinController.text
+      'mobile_no':'9820079956',
+      'pin':'1234'
     };
 
 
@@ -675,11 +672,21 @@ class _SignInScreen extends State<SignInScreen>with SingleTickerProviderStateMix
       // ConsoleLogUtils.printLog('Response Data:$json');
       final  response= jsonDecode(json);
 
-    /*  var status=response['status'] ?? '';*/
-      var status=true;
-      //  ConsoleLogUtils.printLog('nnnnn ${status}');
+      var status=response['status'] ?? '';
+
+      ConsoleLogUtils.printLog('nnnnn ${status}');
       if (status!=null&&status)
       {
+        /* var user_id=json['data']['id'] ?? '';
+        setUserId(user_id.toString());*/
+        {
+          setUserName(response['data']['first_name'] +" "+response['data']['last_name']);
+          setUserFirstName(response['data']['first_name']);
+          setUserLastName(response['data']['last_name']);
+          //  setUserEmail(json['data']['last_name']);
+          setUserMobile_no(phoneController.text);
+          setUserphone_code(phone_code);
+        }
         setLogin(true);
         Future.delayed(const Duration(milliseconds: 100), ()
         {
@@ -694,7 +701,6 @@ class _SignInScreen extends State<SignInScreen>with SingleTickerProviderStateMix
       }
       else
       {
-
         Fluttertoast.showToast(
             msg: response['message']!,
             toastLength: Toast.LENGTH_SHORT,
@@ -715,6 +721,8 @@ class _SignInScreen extends State<SignInScreen>with SingleTickerProviderStateMix
       ConsoleLogUtils.printLog('Request failed with status: ${json}');
     }
   }
+
+
 
 }
 

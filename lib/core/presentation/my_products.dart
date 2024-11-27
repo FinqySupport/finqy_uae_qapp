@@ -39,7 +39,7 @@ class _MyProducts extends State<MyProducts>with SingleTickerProviderStateMixin {
   final _selectedColor = const Color(0xff1a73e8);
   final _tabs = [
     const Tab(text: 'Offers'),
-    const Tab(text: 'My orders'),
+    const Tab(text: 'Apply for'),
 
 
   ];

@@ -28,14 +28,13 @@ import '../widgets/custom_appbar_widgets.dart';
 import '../widgets/custom_headerinfo_signup.dart';
 import '../widgets/gradientappBar.dart';
 
-
-
 class OtpVerification extends StatefulWidget
 {
-  OtpVerification({Key? key, required this.forgot, required this.phone, required this.phone_code}) : super(key: key);
+  OtpVerification({Key? key, required this.forgot, required this.phone, required this.phone_code, required this.from}) : super(key: key);
   final bool forgot;
   final String  phone;
   final String  phone_code;
+  final String  from;
 
   @override
   _OtpVerification createState() => _OtpVerification();
@@ -48,7 +47,7 @@ class _OtpVerification extends State<OtpVerification>with SingleTickerProviderSt
   bool showNumberValidation=false;
 
   var country_code='';
-  var phone_code='';
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   TextEditingController textEditingControllerPhone= TextEditingController();

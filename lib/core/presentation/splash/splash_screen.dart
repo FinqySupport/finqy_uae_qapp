@@ -26,65 +26,76 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
 
-   // getToken();
-    navigateToNextScreen();
+    getToken();
+
     // Initialize the Branch SDK with your Branch key
   }
-  void getToken() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    var email='';
-    try {
-      //  Block of code to try
-      if(prefs.getString('email')!.toString()==null) {
-
-      }
-      else{
-        email=prefs.getString('email')!.toString();
-      }
+  void getToken() async
+  {
+    if (await getLoggedIn() ?? false)
+    {
+      navigateToNextScreen();
     }
-    catch(e) {
-      //  Block of code to handle errors
-    }
+    else
+    {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      var email='';
+      try {
+        //  Block of code to try
+        if(prefs.getString('email')!.toString()==null) {
 
-    var url = Uri.parse(Api.BASE_URL+'oauth/getAccesstoken');
-    var data = {
-      'client_id': Api.ClientID,
-      'client_secret': Api.ClientSecret,
-      'scope': Api.Scope,
-      'grant_type': Api.GrantType,
-      'os_type': Platform.operatingSystem,
-      'email_id': email
-    };
+        }
+        else{
+          email=prefs.getString('email')!.toString();
+        }
+      }
+      catch(e) {
+        //  Block of code to handle errors
+      }
 
-    var response = await http.post(
-        url,
-        body: data
-    );
+      var url = Uri.parse(Api.BASE_AUTH_URL+'oauth/getAccesstoken');
+      var data = {
+        'client_id': Api.ClientID,
+        'client_secret': Api.ClientSecret,
+        'scope': Api.Scope,
+        'grant_type': Api.GrantType,
+        'user': email
+      };
 
-    print('Url=4: $url');
-    print('data=: $data');
-    /*  if(response.statusCode==401)
+
+      var response = await http.post(
+          url,
+          body: data
+      );
+
+      print('Url=4: $url');
+      print('data=: $data');
+      /*  if(response.statusCode==401)
     {
       await Api.getToken();
     }*/
-    if (response.statusCode == 200)
-    {
-      // Request successful
-      var responseData = json.decode(response.body);
-      // prefs.setString('token', "Bearer "+responseData['access_token']);
-      setTokenId("Bearer "+responseData['access_token']);
-      print((await getTokenId()) ?? "");
-      navigateToNextScreen();
-      // if(await getTokenWithoutContextForBGProcess(json['error'] ?? ''))
-      // {
-      //   var response = await http.post(uri, headers: headers, body: data);
-      //   return response.body;
-      // }
+      if (response.statusCode == 200)
+      {
+        // Request successful
+        var responseData = json.decode(response.body);
+        // prefs.setString('token', "Bearer "+responseData['access_token']);
+        setTokenId("Bearer "+responseData['access_token']);
+        print((response.body));
+        navigateToNextScreen();
+        // if(await getTokenWithoutContextForBGProcess(json['error'] ?? ''))
+        // {
+        //   var response = await http.post(uri, headers: headers, body: data);
+        //   return response.body;
+        // }
 
-    } else {
-      // Request failed
-      print('Request failed with status: ${response.statusCode}');
+      } else {
+        navigateToNextScreen();
+        // Request failed
+        print('Request failed with status: ${response.statusCode}');
+      }
     }
+
+
   }
 
 
@@ -94,14 +105,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
     if (await getLoggedIn() ?? false)
     {
-   //   MoengageAppManager.setUsersBasicDetails();
+      //   MoengageAppManager.setUsersBasicDetails();
       Future.delayed(Duration(milliseconds: 2), () {
         // Replace 'HomeScreen()' with the name of the screen you want to navigate to after the splash screen.
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (context) => Dashboard()),
         );
       });
-    //  branch_UrlNextScreen(newdata);
+      //  branch_UrlNextScreen(newdata);
       //return MaterialApp(home: OtpScreen("",""));
     }
     else if (await getOtpScreen() ?? false)
@@ -111,7 +122,7 @@ class _SplashScreenState extends State<SplashScreen> {
         Navigator.of(context).push(
           MaterialPageRoute(builder: (context) =>
               OtpVerification(forgot: false, phone:
-              prefs.getString("mobile_no")!.toString(), phone_code: '',)),
+              prefs.getString("mobile_no")!.toString(), phone_code: '', from: '',)),
         );
       });
     }
